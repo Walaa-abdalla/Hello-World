@@ -4,7 +4,16 @@ version: 2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+commands:
+  print_pipeline_id:
+    steps:
+      - run: echo ${CIRCLE_WORKFLOW_ID}
 jobs:
+  my_job:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - print_pipeline_id
   save_hello_world_output:
     docker:
       - image: cimg/base:stable
@@ -66,10 +75,11 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - save_hello_world_output
-      - print_output_file:
-          requires: 
-            - save_hello_world_output
+      - my_job
+      # - save_hello_world_output
+      # - print_output_file:
+      #     requires: 
+      #       - save_hello_world_output
       # - print_env_variable
       # - print_hello
       # - print_world:
