@@ -36,46 +36,56 @@ jobs:
           at: ~/
       - run: cat ~/output.txt
 
-  # print_hello:
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: print hello
-  #         command: "echo hello"
-  # print_world:
-  #   docker:
-  #     - image: cimg/base:stable #circleci/node:13.8.0
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: print world
-  #         command: "echo world"
-  # print_env_variable:
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     - run: echo $TEST_VAR
-  # say-hello:
-  #   # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-  #   # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-  #   docker:
-  #     - image: cimg/base:stable
-  #   # Add steps to the job
-  #   # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: "Say hello"
-  #         command: "echo Hello, World!"
+  print_hello:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: print hello
+          command: "echo hello"
+  print_world:
+    docker:
+      - image: cimg/base:stable #circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: print world
+          command: "echo world"
+  print_env_variable:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo $TEST_VAR
+  say-hello:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/base:stable
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+      - run:
+          name: "Say hello"
+          command: "echo Hello, World!"
 
+  fail_job:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: exit 1
+      - run:
+        name: on error
+        when: on_fail
+        command: echo failed
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
-      - my_job
+      - fail_job
+      # - my_job
       # - save_hello_world_output
       # - print_output_file:
       #     requires: 
