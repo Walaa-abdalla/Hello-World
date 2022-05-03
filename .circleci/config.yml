@@ -76,9 +76,9 @@ jobs:
     steps:
       - run: exit 1
       - run:
-        name: on error
-        when: on_fail
-        command: echo failed
+          name: on error
+          command: echo "Hello Error!"
+          when: on_fail
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
