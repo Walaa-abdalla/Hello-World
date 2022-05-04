@@ -9,6 +9,23 @@ commands:
     steps:
       - run: echo ${CIRCLE_WORKFLOW_ID}
 jobs:
+# Exercise: Config and Deployment
+  configure_infrastructure: 
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+              # You can get this ID in the section where you registered the SSH Key
+              fingerprints: ["81:2d:c3:f9:57:9c:ba:50:29:40:92:06:fd:cb:87:06"] 
+      - run:
+          name: Install Ansible
+          command: |
+            apk add --update ansible
+      - run:
+          name: Run Playbook and Configure server
+          command: |
+            ansible-playbook -i inventory.txt main-remote.yml
   create_infrastructure: 
     docker:
       - image: amazon/aws-cli
@@ -96,7 +113,8 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - create_infrastructure
+      - configure_infrastructure
+      # - create_infrastructure
       # - fail_job
       # - my_job
       # - save_hello_world_output
