@@ -9,7 +9,22 @@ commands:
     steps:
       - run: echo ${CIRCLE_WORKFLOW_ID}
 jobs:
-# Exercise: Config and Deployment
+  smoke-test:
+    docker: 
+      - image: alpine:latest
+    steps:
+      - run: apk add --update curl
+      - run:
+          name: smoke test 
+          command: |
+            URL="https://blog.udacity.com/"
+            if curl -s --head ${URL}
+            then
+              return 0
+            else
+              return 1
+            fi
+  # Exercise: Config and Deployment
   configure_infrastructure: 
     docker:
       - image: python:3.7-alpine3.11
@@ -114,7 +129,8 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - configure_infrastructure
+      - smoke-test
+      # - configure_infrastructure
       # - create_infrastructure
       # - fail_job
       # - my_job

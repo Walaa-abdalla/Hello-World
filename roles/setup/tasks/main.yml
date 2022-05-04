@@ -15,12 +15,12 @@
       update_cache: yes
   - name: "install pm2"
     become: true
-    apt:
+    npm:
       name: pm2
       global: yes
       production: yes
       state: present
-  - name: "creade web directory"
+  - name: "create web directory"
     file:
       path: ~/web
       state: directory
